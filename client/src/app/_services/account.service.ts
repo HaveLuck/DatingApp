@@ -11,14 +11,18 @@ export class AccountService {
   private currentuserSource = new ReplaySubject<User>(1); // trả về dữ liệu đầu tiên
   currentUser$ = this.currentuserSource.asObservable();
   constructor(private http: HttpClient) { }
-
+  private modelUser: User;
   login(model: any) {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
       map((response: any) => {
         const user = response;
         if (user) {
+        
+          console.log('this.modelUser',this.modelUser);
+         console.log(user.username)
           localStorage.setItem('user', JSON.stringify(user));
           this.currentuserSource.next(user);
+
         }
       })
     )
@@ -32,9 +36,9 @@ export class AccountService {
   }
   register(model: any) {
     return this.http.post(this.baseUrl + 'account/register', model).pipe(
-      map((response: any)=>{
+      map((response: any) => {
         const data = response;
-        if(data){
+        if (data) {
           localStorage.setItem('user', JSON.stringify(data));
           this.currentuserSource.next(data);
         }

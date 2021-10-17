@@ -32,7 +32,6 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers()
         {
             return Ok(await _userRespository.GetMembersAsync());
-
         }
 
         [HttpGet("{username}")]

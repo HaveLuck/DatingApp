@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
   private currentuserSource = new ReplaySubject<User>(1); // trả về dữ liệu đầu tiên
   currentUser$ = this.currentuserSource.asObservable();
   constructor(private http: HttpClient) { }
@@ -17,9 +18,9 @@ export class AccountService {
       map((response: any) => {
         const user = response;
         if (user) {
-        
-          console.log('this.modelUser',this.modelUser);
-         console.log(user.username)
+
+          console.log('this.modelUser', this.modelUser);
+          console.log(user.username)
           localStorage.setItem('user', JSON.stringify(user));
           this.currentuserSource.next(user);
 

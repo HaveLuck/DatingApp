@@ -11,6 +11,8 @@ export class AccountService {
   baseUrl = environment.apiUrl;
   private currentuserSource = new ReplaySubject<User>(1); // trả về dữ liệu đầu tiên
   currentUser$ = this.currentuserSource.asObservable();
+
+  
   constructor(private http: HttpClient) { }
   private modelUser: User;
   login(model: any) {
@@ -18,17 +20,14 @@ export class AccountService {
       map((response: any) => {
         const user = response;
         if (user) {
-
-          console.log('this.modelUser', this.modelUser);
-          console.log(user.username)
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentuserSource.next(user);
-
+          this.setCurrentUser(user);
         }
       })
     )
   }
+  // luu cookie
   setCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentuserSource.next(user);
   }
   logout() {

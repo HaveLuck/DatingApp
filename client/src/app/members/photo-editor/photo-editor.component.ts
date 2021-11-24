@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
@@ -29,13 +29,17 @@ export class PhotoEditorComponent implements OnInit {
   @ViewChild('photoUploadElement') photoUploadElement: ElementRef;
 
   imageSrc: string = '';
-  myForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    file: new FormControl('', [Validators.required]),
-    fileSource: new FormControl('', [Validators.required])
+  myForm = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    file:['', [Validators.required]],
+    fileSource: ['', [Validators.required]]
   });
 
-  constructor(private http: HttpClient, private accountService: AccountService, private memberService: MembersService, private toastr: ToastrService) {
+  constructor(private http: HttpClient, private accountService: AccountService,
+    private memberService: MembersService,
+    private toastr: ToastrService,
+    private fb: FormBuilder
+  ) {
 
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user)
   }

@@ -21,6 +21,7 @@ namespace API.Extensisons
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IUserRespository, UserRespository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            services.AddScoped<LogUserActivity>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(config.GetConnectionString("DefaultConnection"));
